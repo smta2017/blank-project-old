@@ -1,0 +1,122 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L8 OpenApi laravel",
+        "description": "laravel Api's documentation",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "{schema}://dev.laravel.com/api/v1/{lang}",
+            "description": "dev",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "https",
+                        "http"
+                    ],
+                    "default": "https"
+                },
+                "lang": {
+                    "enum": [
+                        "en",
+                        "ar"
+                    ],
+                    "default": "en"
+                }
+            }
+        },
+        {
+            "url": "{schema}://laravel.com/api/v1/{lang}",
+            "description": "Live",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "https",
+                        "http"
+                    ],
+                    "default": "https"
+                },
+                "lang": {
+                    "enum": [
+                        "en",
+                        "ar"
+                    ],
+                    "default": "en"
+                }
+            }
+        },
+        {
+            "url": "{schema}://test.laravel.com/api/v1/{lang}",
+            "description": "test",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "https",
+                        "http"
+                    ],
+                    "default": "https"
+                },
+                "lang": {
+                    "enum": [
+                        "en",
+                        "ar"
+                    ],
+                    "default": "en"
+                }
+            }
+        },
+        {
+            "url": "{schema}://laravel.test/api/v1/{lang}",
+            "description": "Local",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "https",
+                        "http"
+                    ],
+                    "default": "http"
+                },
+                "lang": {
+                    "enum": [
+                        "en",
+                        "ar"
+                    ],
+                    "default": "en"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/projects": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Display a listing of projects."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Login with email and password to get the authentication token",
+                "name": "Token based Based",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "system",
+            "description": "Access to system End-points"
+        }
+    ],
+    "security": [
+        []
+    ]
+}
