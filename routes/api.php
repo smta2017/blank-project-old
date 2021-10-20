@@ -25,4 +25,7 @@ Route::group(['prefix' => 'auth'], function () {
     // Social
     Route::get('/facebook/login', [SocialAuthController::class, 'facebookLogin']);
     Route::get('/facebook/callback', [SocialAuthController::class, 'facebookCallback']);
+
+    Route::get('/google/login', [SocialAuthController::class, 'googleLogin']);
+    Route::get('/google/callback', [SocialAuthController::class, 'googleCallback']);
 });

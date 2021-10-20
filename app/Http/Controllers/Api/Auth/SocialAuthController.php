@@ -9,6 +9,7 @@ use Validator;
 use Socialite;
 use Exception;
 use Auth;
+use Carbon\Carbon;
 
 class SocialAuthController extends Controller
 {
@@ -27,8 +28,36 @@ class SocialAuthController extends Controller
             ], [
                 'name' => $user->name,
                 'email' => $user->email,
-                'email_verified_at' => now(),
+                'email_verified_at' => Carbon::now()->toDateTimeString(),
                 'facebook_id' => $user->id,
+                'password' => encrypt('admin@123')
+            ]);
+            $token = $createUser->createToken('token-name')->plainTextToken;
+
+            return \response()->json(['access_token' => $token, 'token_type' => 'bearer'], 200);
+        } catch (Exception $exception) {
+            dd($exception->getMessage());
+        }
+    }
+
+    //google
+    public function googleLogin()
+    {
+        return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+    }
+
+    public function googleCallback()
+    {
+        try {
+            $user = Socialite::driver('google')->stateless()->user();
+
+            $createUser = User::firstOrCreate([
+                'google_id' => $user->id
+            ], [
+                'name' => $user->name,
+                'email' => $user->email,
+                'email_verified_at' => Carbon::now()->toDateTimeString(),
+                'google_id' => $user->id,
                 'password' => encrypt('admin@123')
             ]);
             $token = $createUser->createToken('token-name')->plainTextToken;
