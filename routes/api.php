@@ -22,10 +22,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 
-    // Social
+    // facebook
     Route::get('/facebook/login', [SocialAuthController::class, 'facebookLogin']);
     Route::get('/facebook/callback', [SocialAuthController::class, 'facebookCallback']);
-
+    // google
     Route::get('/google/login', [SocialAuthController::class, 'googleLogin']);
     Route::get('/google/callback', [SocialAuthController::class, 'googleCallback']);
 });
