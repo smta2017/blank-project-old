@@ -14,7 +14,7 @@ class AuthorizeController extends Controller
 
     public function send()
     {
-        $this->sendSms('01274200778', 'lol');
+      return  $this->sendSms('01274200778', 'lol');
     }
 
     public function __construct(IAuthorize $authorizeRepository)
