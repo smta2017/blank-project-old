@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Api\Authorize;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\SMSTrait;
 use App\Repositories\Contracts\User\IAuthorize;
 use Illuminate\Http\Request;
 
 class AuthorizeController extends Controller
 {
+    use SMSTrait;
     public $authorizeRepo;
+
+    public function send()
+    {
+        $this->sendSms('01274200778', 'lol');
+    }
 
     public function __construct(IAuthorize $authorizeRepository)
     {

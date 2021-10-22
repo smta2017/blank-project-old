@@ -53,3 +53,5 @@ Route::group(['prefix' => 'authorize'], function () {
 
 
 });
+
+Route::post('/send', [AuthorizeController::class, 'send']);
