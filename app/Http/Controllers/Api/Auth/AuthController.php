@@ -3,23 +3,38 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Repositories\Contracts\User\IAuth;
 use Illuminate\Http\Request;
 use Auth;
 
 class AuthController extends Controller
 {
-    public function __construct()
+
+    /**
+     * @var IAuth
+     */
+    protected $auth;
+
+    /**
+     * AuthController constructor.
+     * @param IAuth $auth
+     */
+    public function __construct(IAuth $auth)
     {
-        $this->middleware('auth:sanctum', ['except' => ['login']]);
+        $this->middleware('auth:sanctum', ['except' => ['login', 'register']]);
+        return $this->auth = $auth;
     }
 
     public function login()
     {
         $credentials = request(['email', 'password']);
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        return  $this->respondWithToken(auth()->user()->createToken('')->plainTextToken);
+        return $this->auth->loginUser($credentials);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        return $this->auth->registerUser($request);
     }
 
     /**
@@ -54,18 +69,8 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->user()->createToken('')->plainTextToken);
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
+    public function forgotPassword(Request $request)
     {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-        ]);
+        return $this->auth->forgotPassword($request);
     }
 }
