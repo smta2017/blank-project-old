@@ -27,8 +27,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('me', [AuthController::class, 'me']);
 
     Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
-    Route::get('/reset-password/{token}', [ForgotPasswordController::class ,'resetView'])->middleware('guest')->name('password.reset');
-    Route::post('/reset-password', [ForgotPasswordController::class ,'reset']);
+    Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetView'])->middleware('guest')->name('password.reset');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);
 
     // facebook
     Route::get('/facebook/login', [SocialAuthController::class, 'facebookLogin']);
@@ -38,7 +38,11 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/google/callback', [SocialAuthController::class, 'googleCallback']);
 });
 
-Route::get('/email/verify/{id}',[VerificationController::class, 'verifyEmail'])->name('verification.verify');
+Route::group(['prefix' => 'verify'], function () {
+    Route::get('/email/{id}', [VerificationController::class, 'verifyEmail'])->name('verification.verify');
+    Route::get('/send-otp/{phone_number}', [VerificationController::class, 'sendMobileOTP']);
+    Route::get('/confirm-otp/{phone_number}/{otp}', [VerificationController::class, 'confirmOTP']);
+});
 
 Route::group(['prefix' => 'authorize'], function () {
     Route::get('/roles', [AuthorizeController::class, 'roles']);
@@ -50,6 +54,4 @@ Route::group(['prefix' => 'authorize'], function () {
     Route::post('/role-to-user', [AuthorizeController::class, 'assignRoleToUser']);
     Route::get('/user-permissions/{id}', [AuthorizeController::class, 'userPermissions']);
     Route::post('/revoke', [AuthorizeController::class, 'revoke']);
-
-
 });

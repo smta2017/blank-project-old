@@ -3,23 +3,27 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\ApiResponseTrait;
+use App\Http\Traits\SMSTrait;
 use App\Models\User;
-use App\Repositories\Contracts\User\IAuth;
 use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
+    use SMSTrait;
+    use ApiResponseTrait;
 
-    /**
-     * @var IAuth
-     */
-    protected $auth;
-
-    public function __construct(IAuth $auth)
+    public function sendMobileOTP($phone_number)
     {
-        return $this->auth = $auth;
+        $res =  $this->sendOTP($phone_number);
+        return  $this->apiResponse("success", $res);
     }
 
+    public function confirmOTP($phone_number, $otp)
+    {
+        $res =  $this->verifyOTP($phone_number, $otp);
+        return  $this->apiResponse("success", $res);
+    }
 
     public function verifyEmail($user_id, Request $request)
     {
@@ -30,6 +34,6 @@ class VerificationController extends Controller
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
         }
-        return $user;
+        return  $this->apiResponse("success", $user);
     }
 }

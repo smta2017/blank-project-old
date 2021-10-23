@@ -2,45 +2,32 @@
 
 namespace App\Http\Traits;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
 trait SMSTrait
 {
-    public $client;
-    public function __construct()
+    public $clint_header;
+    public $clint_body;
+    public $clint_form_params;
+    public $clint_url;
+    public $clint_method;
+
+    public function _send()
     {
-        $this->client = new \GuzzleHttp\Client(["cookies" => true, 'defaults' => ['verify' => false]]);
+        $client = new Client();
+        $res = $client->request($this->clint_method, $this->clint_url, $this->clint_form_params, $this->clint_header, $this->clint_body);
+        return $res->getBody();
     }
+
 
     public function sendSms($number, $message)
     {
         return $this->sendTwilioSMS($number, $message);
     }
 
-    function sendVictoryLinkSMS($number, $message)
-    {
-        $sms = [
-            "UserName" => env("VICTORYLINK_USER"),
-            "Password" => env("VICTORYLINK_PASSWORD"),
-            "SMSText" => $message,
-            "SMSLang" => "e",
-            "SMSSender" => env("VICTORYLINK_SENDER"),
-            "SMSReceiver" => $number
-        ];
-        Log::info($sms);
-        if (app()->environment() === 'production' || app()->environment() === 'development') {
-            $res = $this->client->post('https://smsvas.vlserv.com/KannelSending/service.asmx/SendSMSWithDLR', [
-                "form_params" => $sms
-            ]);
-        }
-
-        $response = (string)$res->getBody();
-
-        return $response;
-    }
-
-    function sendTwilioSMS($number, $message)
+    public function sendTwilioSMS($number, $message)
     {
         $sms = [
             "Body" => $message,
@@ -48,34 +35,68 @@ trait SMSTrait
             "To" => "+2" . $number
         ];
 
-        if (app()->environment() === 'production' || app()->environment() === 'development') {
+        if (app()->environment() === 'production' || app()->environment() === 'development' || app()->environment() === 'local') {
             $SID = env("TWILIO_SID");
             $token = env("TWILIO_TOKEN");
-            $res = $this->client->post("https://api.twilio.com/2010-04-01/Accounts/$SID/Messages.json", [
+
+            $this->clint_method = 'post';
+            $this->clint_url = 'https://api.twilio.com/2010-04-01/Accounts/' . $SID . '/Messages.json';
+            $this->clint_form_params = [
                 "form_params" => $sms,
                 'auth' => [$SID, $token]
-            ]);
+            ];
+            $res = json_decode($this->_send());
         }
 
-        $response = (string)$res->getBody();
-
-        return $response;
+        return $res;
     }
 
-    public function checkCredit()
+    public function sendOTP($number)
     {
-        $credentials = [
-            "UserName" => env("VICTORYLINK_USER"),
-            "Password" => env("VICTORYLINK_PASSWORD")
+        $data = [
+            "Channel" => 'sms',
+            "To" => "+2" . $number
         ];
 
-        $res = $this->client->post('https://smsvas.vlserv.com/KannelSending/service.asmx/CheckCredit', [
-            "form_params" => $credentials
-        ]);
+        if (app()->environment() === 'production' || app()->environment() === 'development' || app()->environment() === 'local') {
+            $SSID = env("TWILIO_SSID");
+            $SID = env("TWILIO_SID");
+            $token = env("TWILIO_TOKEN");
 
+            $this->clint_method = 'post';
+            $this->clint_url = 'https://verify.twilio.com/v2/Services/' . $SSID . '/Verifications';
+            $this->clint_form_params = [
+                "form_params" => $data,
+                'auth' => [$SID, $token]
+            ];
+            $res = $this->_send();
+        }
 
-        $response = simplexml_load_string((string)$res->getBody());
+        return json_decode($res);
+    }
 
-        return (string)$response;
+    public function verifyOTP($number, $otp)
+    {
+
+        $data = [
+            "Code" => $otp,
+            "To" => "+2" . $number
+        ];
+
+        if (app()->environment() === 'production' || app()->environment() === 'development' || app()->environment() === 'local') {
+            $SSID = env("TWILIO_SSID");
+            $SID = env("TWILIO_SID");
+            $token = env("TWILIO_TOKEN");
+
+            $this->clint_method = 'post';
+            $this->clint_url = 'https://verify.twilio.com/v2/Services/' . $SSID . '/VerificationCheck';
+            $this->clint_form_params = [
+                "form_params" => $data,
+                'auth' => [$SID, $token]
+            ];
+            $res = $this->_send();
+        }
+
+        return json_decode($res);
     }
 }
