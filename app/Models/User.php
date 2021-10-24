@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements Auditable,MustVerifyEmail
+class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
     use \OwenIt\Auditing\Auditable;
@@ -24,6 +24,7 @@ class User extends Authenticatable implements Auditable,MustVerifyEmail
         'name',
         'email',
         'password',
+        'phone',
         'facebook_id',
         'goolge_id',
     ];
@@ -49,7 +50,23 @@ class User extends Authenticatable implements Auditable,MustVerifyEmail
 
 
     public function sendEmailVerificationNotification()
-{
-    $this->notify(new \App\Notifications\VerifyEmail);
-}
+    {
+        $this->notify(new \App\Notifications\VerifyEmail);
+    }
+
+    public function scopeAdmin($query)
+    {
+        return $query->where('is_admin', 1);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
+
+    public function scopeType($query,$type)
+    {
+        return $query->where('user_type', $type);
+    }
+    
 }
