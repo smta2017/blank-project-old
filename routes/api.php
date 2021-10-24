@@ -64,5 +64,3 @@ Route::group(['prefix' => 'users'], function () {
     Route::get('/unread-notifications', [CustomerController::class, 'unReadNotifications']);
     Route::get('/notifications/{id}/mark-read', [CustomerController::class, 'markAsRead']);
 });
-
-Route::get('/update', [UserController::class, 'update']);
