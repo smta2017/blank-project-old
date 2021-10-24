@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Traits;
+namespace App\Helpers;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-trait ApiResponseTrait
-{
+class ApiResponse{
     /**
      * @param null $message
      * @param null $data
@@ -15,7 +14,8 @@ trait ApiResponseTrait
      * @param null $token
      * @return JsonResponse
      */
-    public function apiResponse(
+    public static function format(
+        $status=true,
         $message = null,
         $data = null,
         int $code = 200,
@@ -24,6 +24,7 @@ trait ApiResponseTrait
     ): JsonResponse
     {
         $response = [
+            'status'=>$status,
             'message' => $message,
             'errors' => $errors,
             'data' => $data
@@ -38,10 +39,10 @@ trait ApiResponseTrait
      * This function apiResponseValidation for Validation Request
      * @param $validator
      */
-    public function apiResponseValidation($validator)
+    public static function apiFormatValidation($validator)
     {
         $errors = $validator->errors();
-        $response = $this->apiResponse('Invalid data send', null, 422, $errors->messages());
+        $response = self::format(false,'Invalid data send', null, 422, $errors->messages());
         throw new HttpResponseException($response);
     }
 }
