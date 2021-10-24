@@ -102,7 +102,7 @@ abstract class BaseRepository implements IBase
      * @param array $data
      * @return mixed
      */
-    public function update($id, array $data)
+    public function update(array $data,$id)
     {
         $record = $this->find($id);
         $record->update($data);

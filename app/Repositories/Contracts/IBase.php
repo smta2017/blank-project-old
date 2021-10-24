@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repositories\Contracts;
+
 /**
  * Interface IBase Created By: Ahmed Mohamed
  */
@@ -29,7 +30,7 @@ interface IBase
      * @param bool $isMulti
      * @return mixed
      */
-    public function findMultiWhere($criteria , bool $isMulti);
+    public function findMultiWhere($criteria, bool $isMulti);
 
     /**
      * @param $column
@@ -55,7 +56,7 @@ interface IBase
      * @param array $data
      * @return mixed
      */
-    public function update($id, array $data);
+    public function update(array $data, $id);
 
     /**
      * @param $id
