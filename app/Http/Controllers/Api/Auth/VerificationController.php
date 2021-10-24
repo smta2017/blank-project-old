@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\SMSTrait;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,18 +11,17 @@ use Illuminate\Http\Request;
 class VerificationController extends Controller
 {
     use SMSTrait;
-    use ApiResponseTrait;
 
     public function sendMobileOTP($phone_number)
     {
         $res =  $this->sendOTP($phone_number);
-        return  $this->apiResponse("success", $res);
+        return  ApiResponse::format("success", $res);
     }
 
     public function confirmOTP($phone_number, $otp)
     {
         $res =  $this->verifyOTP($phone_number, $otp);
-        return  $this->apiResponse("success", $res);
+        return  ApiResponse::format("success", $res);
     }
 
     public function verifyEmail($user_id, Request $request)
@@ -34,6 +33,6 @@ class VerificationController extends Controller
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
         }
-        return  $this->apiResponse("success", $user);
+        return  ApiResponse::format("success", $user);
     }
 }
