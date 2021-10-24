@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\SocialAuthController;
 use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Authorize\AuthorizeController;
+use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,3 +56,13 @@ Route::group(['prefix' => 'authorize'], function () {
     Route::get('/user-permissions/{id}', [AuthorizeController::class, 'userPermissions']);
     Route::post('/revoke', [AuthorizeController::class, 'revoke']);
 });
+
+Route::apiResource('/users', UserController::class);
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/profile/{id}', [UserController::class, 'tuserProfile']);
+    Route::get('/notifications', [CustomerController::class, 'notifications']);
+    Route::get('/unread-notifications', [CustomerController::class, 'unReadNotifications']);
+    Route::get('/notifications/{id}/mark-read', [CustomerController::class, 'markAsRead']);
+});
+
+Route::get('/update', [UserController::class, 'update']);
