@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Helpers\ApiResponse;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -26,8 +28,16 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:80',
             'email' =>'email|required|email|unique:users',
-            'phone' =>'required|size:11',
+            'phone' => 'required|size:11||unique:users',
             'password' => 'required|min:8'
         ];
+    }
+
+     /**
+     * @param Validator $validator
+     */
+    protected function failedValidation(Validator $validator)
+    {
+       ApiResponse::apiFormatValidation($validator);
     }
 }

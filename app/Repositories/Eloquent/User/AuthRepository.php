@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquent\User;
 
-use App\Http\Traits\ApiResponseTrait;
+use App\Helpers\ApiResponse;
 use App\Repositories\Eloquent\BaseRepository;
 use App\Repositories\Contracts\User\IAuth;
 use Illuminate\Contracts\Foundation\Application;
@@ -11,7 +11,6 @@ use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +21,6 @@ use Illuminate\Support\Str;
  */
 class AuthRepository extends BaseRepository implements IAuth
 {
-    use ApiResponseTrait;
 
     /**
      * @return string
@@ -59,7 +57,7 @@ class AuthRepository extends BaseRepository implements IAuth
         if (!$token = auth()->attempt($request)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return  $this->apiResponse("success", $this->respondWithToken(auth()->user()->createToken('')->plainTextToken));
+        return  ApiResponse::format("success", $this->respondWithToken(auth()->user()->createToken('')->plainTextToken));
     }
 
     /**
@@ -74,7 +72,7 @@ class AuthRepository extends BaseRepository implements IAuth
         ));
 
         $user->sendEmailVerificationNotification();
-        return  $this->apiResponse("success", $user);
+        return  ApiResponse::format("success", $user);
     }
 
     /**
@@ -97,7 +95,7 @@ class AuthRepository extends BaseRepository implements IAuth
             $request->only('email')
         );
 
-        return  $this->apiResponse("success",'Email sent.');
+        return  ApiResponse::format("success",'Email sent.');
     }
     public function resetView(Request $request)
     {

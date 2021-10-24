@@ -21,7 +21,7 @@ interface IAuth extends IBase
      * @param $request
      * @return mixed
      */
-    public function registerUser($request);
+    public function registerUser(Request $request);
 
     /**
      * @param $request
