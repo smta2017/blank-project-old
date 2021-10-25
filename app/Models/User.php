@@ -20,6 +20,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, HasMed
     use \OwenIt\Auditing\Auditable;
     use HasRoles;
     use SMSTrait;
+    use \Rinvex\Attributes\Traits\Attributable;
 
     /**
      * The attributes that are mass assignable.

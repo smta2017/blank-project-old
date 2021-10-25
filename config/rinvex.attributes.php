@@ -28,4 +28,27 @@ return [
 
     ],
 
+    
+    // Creating new attribute 'size-varchar' for user model
+    //-----------------------------------------------------
+    // public function FunctionName()
+    // { 
+    //     app('rinvex.attributes.attribute')->create([
+    //         'slug' => 'size',
+    //         'type' => 'varchar',
+    //         'name' => 'Product Size',
+    //         'entities' => ['App\Models\User'],
+    //     ]);
+    // }
+
+
+    // Usage
+    //-----------------------------------------------------
+    // public function FunctionName()
+    // {
+    //     $user = User::find(1);
+    //     $user =  $product->size = 50;
+    //     $user =  $product->save();
+    // }
+
 ];
