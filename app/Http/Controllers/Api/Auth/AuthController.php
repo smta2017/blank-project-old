@@ -184,7 +184,6 @@ class AuthController extends Controller
      *     required=true,
      *         @OA\Schema(
      *           enum={"customer", "specialist"}
-     *           type="string",
      *         )
      *     ),
      * 
