@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\SocialAuthController;
 use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Authorize\AuthorizeController;
 use App\Http\Controllers\Api\User\UserController;
+use App\Http\Controllers\CityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -66,5 +67,9 @@ Route::group(['prefix' => 'en'], function () {
             Route::get('/unread-notifications', [CustomerController::class, 'unReadNotifications']);
             Route::get('/notifications/{id}/mark-read', [CustomerController::class, 'markAsRead']);
         });
+
+
+        Route::apiResource('/cities', CityController::class);
+
     });
 });
