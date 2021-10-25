@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Authorize\AuthorizeController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\AreaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +71,9 @@ Route::group(['prefix' => 'en'], function () {
 
 
         Route::apiResource('/cities', CityController::class);
+
+        
+        Route::apiResource('/areas', AreaController::class);
 
     });
 });
