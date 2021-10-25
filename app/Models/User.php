@@ -33,6 +33,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail, HasMed
         'phone',
         'facebook_id',
         'goolge_id',
+        'user_type',
     ];
 
     /**

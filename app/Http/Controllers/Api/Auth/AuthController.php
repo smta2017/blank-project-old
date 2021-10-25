@@ -177,6 +177,17 @@ class AuthController extends Controller
      *     ),
      *  
      * 
+     *  
+     *   @OA\Parameter(
+     *name="user_type",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           enum={"customer", "specialist"}
+     *           type="string",
+     *         )
+     *     ),
+     * 
      * 
      * )
      */
