@@ -43,7 +43,7 @@ class AuthRepository extends BaseRepository implements IAuth
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
         ]);
     }
 
@@ -54,10 +54,10 @@ class AuthRepository extends BaseRepository implements IAuth
      */
     public function loginUser($request)
     {
-        if (!$token = auth()->attempt($request)) {
+        if (!auth()->attempt($request)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return  ApiResponse::format("success", $this->respondWithToken(auth()->user()->createToken('')->plainTextToken));
+        return  ApiResponse::format("success9", $this->respondWithToken(auth()->user()->createToken('')->plainTextToken));
     }
 
     /**
@@ -71,7 +71,17 @@ class AuthRepository extends BaseRepository implements IAuth
             ['password' => Hash::make($request->password)],
         ));
 
-        $user->sendEmailVerificationNotification();
+        if ($user) {
+           $user['access_token']= $user->createToken('')->plainTextToken;
+        }
+        if (\config("app.enable_email_verification")) {
+            $user->sendEmailVerificationNotification();
+        }
+
+        if (\config("app.enable_phone_verification")) {
+            $user->sendPhoneVerificationOTP();
+        }
+
         return  ApiResponse::format("success", $user);
     }
 
@@ -102,7 +112,7 @@ class AuthRepository extends BaseRepository implements IAuth
         return \view('auth.reset-password');
     }
 
-    public function reset(Request $request)
+    public function resetPassword(Request $request)
     {
 
         $request->validate([
@@ -183,9 +193,9 @@ class AuthRepository extends BaseRepository implements IAuth
      * @param $request
      * @return JsonResponse
      */
-    public function logout($request): JsonResponse
+    public function logout($user): JsonResponse
     {
-        return \response()->json("ok");
+        return  ApiResponse::format("success", $user->tokens()->delete());
     }
 
     /**

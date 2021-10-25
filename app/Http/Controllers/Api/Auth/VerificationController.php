@@ -12,16 +12,86 @@ class VerificationController extends Controller
 {
     use SMSTrait;
 
+     /**
+     * send phone OTP.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     
+     * @OA\get(
+     *   path="/verify/send-otp/{phone_number}",
+     *   tags={"system"},
+     *   summary="send OTP",
+     *  
+     *   @OA\Response(
+     *     response=200,
+     *     description="send OTP", @OA\JsonContent()
+     *   ),
+     *
+     *   @OA\Parameter(
+     *name="phone_number",
+     *     in="path",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=15,
+     *         )
+     *     ),
+     *  
+     * 
+     * )
+     */
     public function sendMobileOTP($phone_number)
     {
         $res =  $this->sendOTP($phone_number);
         return  ApiResponse::format("success", $res);
     }
 
+    /**
+     * verify phone OTP.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     
+     * @OA\get(
+     *   path="/verify/confirm-otp/{phone_number}/{otp}",
+     *   tags={"system"},
+     *   summary="OTP verifitation",
+     *  
+     *   @OA\Response(
+     *     response=200,
+     *     description="OTP verifitation", @OA\JsonContent()
+     *   ),
+     *
+     *   @OA\Parameter(
+     *name="phone_number",
+     *     in="path",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=15,
+     *         )
+     *     ),
+     * 
+     *   @OA\Parameter(
+     *name="otp",
+     *     in="path",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=15,
+     *         )
+     *     ),
+     *  
+     * 
+     * )
+     */
     public function confirmOTP($phone_number, $otp)
     {
         $res =  $this->verifyOTP($phone_number, $otp);
-        return  ApiResponse::format("success", $res);
+        if ($res->valid==true) {
+            return  ApiResponse::format("success", $res);
+        }else{
+            return  ApiResponse::format("fail", $res,false);
+        }
     }
 
     public function verifyEmail($user_id, Request $request)

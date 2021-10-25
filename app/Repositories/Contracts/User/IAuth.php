@@ -38,7 +38,7 @@ interface IAuth extends IBase
 
     public function resetView(Request $request);
     
-    public function reset(Request $request);
+    public function resetPassword(Request $request);
 
 
     public function sendCode($request);

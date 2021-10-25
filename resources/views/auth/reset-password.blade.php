@@ -267,7 +267,7 @@
                 <h2>{{env('APP_NAME')}}</h2>
                 <h4>Reset Password</h4>
             </header>
-            <form class="login-form" action="/api/auth/reset-password" method="post">
+            <form class="login-form" action="/api/en/v1/auth/reset-password" method="post">
                 <input type="hidden" name="token" value="{{ Request::route('token') }}" >
                 <input type="hidden" name="email" value="{{ Request('email') }}" >
                 <input type="password" name="password" class="login-input" placeholder="Password" required />

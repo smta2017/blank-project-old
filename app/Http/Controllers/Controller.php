@@ -20,7 +20,7 @@ class Controller extends BaseController
      *
      * 
      * @OA\Server(
-     *      url="{schema}://dev.laravel.com/api/v1/{lang}",
+     *      url="{schema}://talsystem.com/api/{lang}/v1",
      *      description="dev",
      *      @OA\ServerVariable(
      *          serverVariable="schema",
@@ -37,7 +37,7 @@ class Controller extends BaseController
      *
      * 
      * @OA\Server(
-     *      url="{schema}://laravel.com/api/v1/{lang}",
+     *      url="{schema}://laravel.com/api/{lang}/v1",
      *      description="Live",
      *      @OA\ServerVariable(
      *          serverVariable="schema",
@@ -53,7 +53,7 @@ class Controller extends BaseController
      * )
      * 
      *   @OA\Server(
-     *      url="{schema}://test.laravel.com/api/v1/{lang}",
+     *      url="{schema}://test.laravel.com/api/{lang}/v1",
      *      description="test",
      *      @OA\ServerVariable(
      *          serverVariable="schema",
@@ -69,8 +69,8 @@ class Controller extends BaseController
      * )
      * )
      * 
-     * @OA\Server(
-     *      url="{schema}://laravel.test/api/v1/{lang}",
+     *   @OA\Server(
+     *      url="{schema}://laravel.test/api/{lang}/v1",
      *      description="Local",
      *      @OA\ServerVariable(
      *          serverVariable="schema",
@@ -107,10 +107,5 @@ class Controller extends BaseController
      */
 
 
-    /**
-     * @OA\Get(
-     *     path="/projects",
-     *     @OA\Response(response="200", description="Display a listing of projects.")
-     * )
-     */
+   
 }

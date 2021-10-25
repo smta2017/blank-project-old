@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Repositories\Contracts\User\IAuth;
@@ -26,25 +27,189 @@ class AuthController extends Controller
         return $this->auth = $auth;
     }
 
+
+    /**
+     * Get a TOKEN via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     
+     * @OA\post(
+     *   path="/auth/login",
+     *   tags={"system"},
+     *   summary="Login Customer",
+     *  
+     *   @OA\Response(
+     *     response=200,
+     *     description="", @OA\JsonContent()
+     *   ),
+     *
+     *
+     *   @OA\Parameter(
+     *name="email",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=100,
+     * 
+     *         )
+     *     ),
+     *  
+     *   @OA\Parameter(
+     *name="password",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=100,
+     *         ),
+     *      style="form"
+     *     ),
+     *  
+     * 
+     *    @OA\Parameter(
+     *name="firebase_token",
+     *     in="query",
+     *     required=false,
+     *         @OA\Schema(
+     *           type="string",
+     *         ),
+     *      style="form"
+     *     ),
+     *  
+     * 
+     * 
+     * )
+     */
+
     public function login()
     {
         $credentials = request(['email', 'password']);
         return $this->auth->loginUser($credentials);
     }
 
+
+    /**
+     * Store a newly created resource in storage. 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     *
+     * @OA\post(
+     *   path="/auth/register",
+     *   tags={"system"},
+     *   summary="Register Customer",
+     *
+     *    @OA\Response(
+     *     response=200,
+     *     description="", @OA\JsonContent()
+     *   ),
+     *
+     * 
+     *   @OA\Parameter(
+     *name="name",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=100,
+     * 
+     *         )
+     *     ),
+     * 
+     *   @OA\Parameter(
+     *name="email",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=100,
+     * 
+     *         )
+     *     ),
+     * 
+     * 
+     * 
+     *     @OA\Parameter(
+     *name="country_code",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=100,
+     * 
+     *         )
+     *     ),
+     * 
+     * 
+     *   @OA\Parameter(
+     *name="phone",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=100,
+     * 
+     *         )
+     *     ),
+     *  
+     *   @OA\Parameter(
+     *name="password",
+     *     in="query",
+     *     required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=100,
+     *         ),
+     *      style="form"
+     *     ),
+     *  
+     * 
+     *   @OA\Parameter(
+     *name="firebase_token",
+     *     in="query",
+     *     required=false,
+     *         @OA\Schema(
+     *           type="string",
+     *           maxLength=200,
+     *         ),
+     *      style="form"
+     *     ),
+     *  
+     * 
+     * 
+     * )
+     */
+
     public function register(RegisterRequest $request)
     {
         return $this->auth->registerUser($request);
     }
 
+
+
     /**
      * Get the authenticated User.
      *
      * @return \Illuminate\Http\JsonResponse
+     * @OA\post(
+     *   path="/auth/me",
+     *   tags={"system"},
+     *   summary="Authenticated User",
+     *   security={{ "apiAuth": {} }}, 
+     *
+     *    @OA\Response(
+     *     response=200,
+     *     description="", @OA\JsonContent()
+     *   ),
+     * 
+     * 
+     * )
      */
+
     public function me()
     {
-        return response()->json(auth()->user());
+        return ApiResponse::format("sucsess", auth()->user());
     }
 
     /**
@@ -54,9 +219,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        return $this->auth->logout(auth()->user());
     }
 
     /**

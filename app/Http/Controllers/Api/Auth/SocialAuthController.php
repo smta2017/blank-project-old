@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -13,9 +14,29 @@ use Carbon\Carbon;
 
 class SocialAuthController extends Controller
 {
+    /**
+     * get the url to login with facebook.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     
+     * @OA\get(
+     *   path="/auth/facebook/login",
+     *   tags={"system"},
+     *   summary="Facebook login",
+     *  
+     *   @OA\Response(
+     *     response=200,
+     *     description="", @OA\JsonContent()
+     *   ),
+    
+     * 
+     * 
+     * )
+     */
     public function facebookLogin()
     {
-        return Socialite::driver('facebook')->stateless()->redirect()->getTargetUrl();
+        $url = Socialite::driver('facebook')->stateless()->redirect()->getTargetUrl();
+        return  ApiResponse::format("success", $url);
     }
 
     public function facebookCallback()
@@ -40,10 +61,27 @@ class SocialAuthController extends Controller
         }
     }
 
-    //google
+    /**
+     * get the url to login with google.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     
+     * @OA\get(
+     *   path="/auth/google/login",
+     *   tags={"system"},
+     *   summary="Facebook login",
+     *  
+     *   @OA\Response(
+     *     response=200,
+     *     description="", @OA\JsonContent()
+     *   ),
+     * 
+     * )
+     */
     public function googleLogin()
     {
-        return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+        $url = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+        return  ApiResponse::format("success", $url);
     }
 
     public function googleCallback()

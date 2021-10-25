@@ -15,9 +15,9 @@ class ApiResponse{
      * @return JsonResponse
      */
     public static function format(
-        $status=true,
         $message = null,
         $data = null,
+        $status=true,
         int $code = 200,
         $errors = null,
         $token = null

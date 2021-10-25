@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\SMSTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,12 +13,14 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements Auditable, MustVerifyEmail,HasMedia
+class User extends Authenticatable implements Auditable, MustVerifyEmail, HasMedia
 {
     use InteractsWithMedia;
     use HasApiTokens, HasFactory, Notifiable;
     use \OwenIt\Auditing\Auditable;
     use HasRoles;
+    use SMSTrait;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -57,6 +60,11 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail,HasMedi
         $this->notify(new \App\Notifications\VerifyEmail);
     }
 
+    public function sendPhoneVerificationOTP()
+    {
+        $this->sendOTP($this->phone);
+    }
+
     public function scopeAdmin($query)
     {
         return $query->where('is_admin', 1);
@@ -67,9 +75,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail,HasMedi
         return $query->where('is_active', 1);
     }
 
-    public function scopeType($query,$type)
+    public function scopeType($query, $type)
     {
         return $query->where('user_type', $type);
     }
-    
 }

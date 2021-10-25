@@ -7,7 +7,27 @@
     },
     "servers": [
         {
-            "url": "{schema}://dev.laravel.com/api/v1/{lang}",
+            "url": "{schema}://laravel.test/api/{lang}/v1",
+            "description": "Local",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "https",
+                        "http"
+                    ],
+                    "default": "http"
+                },
+                "lang": {
+                    "enum": [
+                        "en",
+                        "ar"
+                    ],
+                    "default": "en"
+                }
+            }
+        },
+        {
+            "url": "{schema}://dev.laravel.com/api/{lang}/v1",
             "description": "dev",
             "variables": {
                 "schema": {
@@ -27,7 +47,7 @@
             }
         },
         {
-            "url": "{schema}://laravel.com/api/v1/{lang}",
+            "url": "{schema}://laravel.com/api/{lang}/v1",
             "description": "Live",
             "variables": {
                 "schema": {
@@ -47,7 +67,7 @@
             }
         },
         {
-            "url": "{schema}://test.laravel.com/api/v1/{lang}",
+            "url": "{schema}://test.laravel.com/api/{lang}/v1",
             "description": "test",
             "variables": {
                 "schema": {
@@ -65,34 +85,300 @@
                     "default": "en"
                 }
             }
-        },
-        {
-            "url": "{schema}://laravel.test/api/v1/{lang}",
-            "description": "Local",
-            "variables": {
-                "schema": {
-                    "enum": [
-                        "https",
-                        "http"
-                    ],
-                    "default": "http"
-                },
-                "lang": {
-                    "enum": [
-                        "en",
-                        "ar"
-                    ],
-                    "default": "en"
-                }
-            }
         }
     ],
     "paths": {
-        "/projects": {
-            "get": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "Login Customer",
+                "description": "Get a TOKEN via given credentials.",
+                "operationId": "3d1aae0ea009e03fadebec819afd774e",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "firebase_token",
+                        "in": "query",
+                        "required": false,
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Display a listing of projects."
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "Register Customer",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "f8f20d8e5fa3ee0d9ab537e9ac6206b5",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "country_code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "firebase_token",
+                        "in": "query",
+                        "required": false,
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 200
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "post": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "Authenticated User",
+                "description": "Get the authenticated User.",
+                "operationId": "06faee6562d008fc1476332b2f83c070",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/forgot-password": {
+            "post": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "Forget password",
+                "description": "send reset password email.",
+                "operationId": "533f41a9b1889b9739471c0952d6e2d8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "example": {
+                                    "email": "name@email.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/facebook/login": {
+            "get": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "Facebook login",
+                "description": "get the url to login with facebook.",
+                "operationId": "d47e6743dd4596710286220868a0242c",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/google/login": {
+            "get": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "Facebook login",
+                "description": "get the url to login with google.",
+                "operationId": "2b001490df290ec680018f4edb790cd5",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/verify/send-otp/{phone_number}": {
+            "get": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "send OTP",
+                "description": "send phone OTP.",
+                "operationId": "e6c1216d150f4e3a27b67d7be7760457",
+                "parameters": [
+                    {
+                        "name": "phone_number",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "send OTP",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/verify/confirm-otp/{phone_number}/{otp}": {
+            "get": {
+                "tags": [
+                    "system"
+                ],
+                "summary": "OTP verifitation",
+                "description": "verify phone OTP.",
+                "operationId": "7ba14e16996ec66a81be1fb52c7ce780",
+                "parameters": [
+                    {
+                        "name": "phone_number",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 15
+                        }
+                    },
+                    {
+                        "name": "otp",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OTP verifitation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
