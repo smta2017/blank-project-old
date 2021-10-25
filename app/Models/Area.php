@@ -10,7 +10,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Area extends Model implements Auditable
 {
     use HasFactory;
-
     use \OwenIt\Auditing\Auditable;
 
     public function City()
