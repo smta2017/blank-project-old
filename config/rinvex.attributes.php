@@ -28,7 +28,7 @@ return [
 
     ],
 
-    
+
     // Creating new attribute 'size-varchar' for user model
     //-----------------------------------------------------
     // public function FunctionName()
@@ -41,6 +41,7 @@ return [
     //     ]);
     // }
 
+    
 
     // Usage
     //-----------------------------------------------------
