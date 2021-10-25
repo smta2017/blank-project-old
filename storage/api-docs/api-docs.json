@@ -7,27 +7,7 @@
     },
     "servers": [
         {
-            "url": "{schema}://laravel.test/api/{lang}/v1",
-            "description": "Local",
-            "variables": {
-                "schema": {
-                    "enum": [
-                        "https",
-                        "http"
-                    ],
-                    "default": "http"
-                },
-                "lang": {
-                    "enum": [
-                        "en",
-                        "ar"
-                    ],
-                    "default": "en"
-                }
-            }
-        },
-        {
-            "url": "{schema}://dev.laravel.com/api/{lang}/v1",
+            "url": "{schema}://talsystem.com/api/{lang}/v1",
             "description": "dev",
             "variables": {
                 "schema": {
@@ -76,6 +56,26 @@
                         "http"
                     ],
                     "default": "https"
+                },
+                "lang": {
+                    "enum": [
+                        "en",
+                        "ar"
+                    ],
+                    "default": "en"
+                }
+            }
+        },
+        {
+            "url": "{schema}://laravel.test/api/{lang}/v1",
+            "description": "Local",
+            "variables": {
+                "schema": {
+                    "enum": [
+                        "https",
+                        "http"
+                    ],
+                    "default": "http"
                 },
                 "lang": {
                     "enum": [
